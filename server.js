@@ -3,10 +3,10 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { createClient } from 'redis';
 import { createAdapter } from '@socket.io/redis-adapter';
+import os from 'os';
 
 const app = express();
 const httpServer = createServer(app);
-const os = require('os');
 
 // PRODUCTION FIX 1: Strict CORS policy via Environment Variables
 const allowedOrigins = process.env.ALLOWED_ORIGINS
@@ -37,13 +37,11 @@ Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
 });
 
 io.on('connection', (socket) => {
+    console.log(`[Replica Host: ${os.hostname()}] Connected: ${socket.id}`);
+
     socket.on('chat_message', (msg) => {
         io.emit('chat_message', msg);
     });
-});
-
-io.on('connection', (socket) => {
-    console.log(`[Replica Host: ${os.hostname()}] Connected: ${socket.id}`);
 });
 
 const PORT = process.env.PORT || 3000;
