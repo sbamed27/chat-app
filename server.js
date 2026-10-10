@@ -16,7 +16,8 @@ const io = new Server(httpServer, {
     cors: {
         origin: allowedOrigins,
         methods: ["GET", "POST"]
-    }
+    },
+    transports: ["websocket"]
 });
 
 // PRODUCTION FIX 2: Explicit Error Handling for Redis
