@@ -40,7 +40,7 @@ io.on('connection', (socket) => {
     console.log(`[Replica Host: ${os.hostname()}] Connected: ${socket.id}`);
 
     socket.on('chat_message', (msg) => {
-        io.emit('chat_message', msg);
+        socket.broadcast.emit('chat_message', msg);
     });
 });
 
