@@ -40,12 +40,18 @@ async function initDB() {
             CREATE TABLE IF NOT EXISTS messages (
                 id SERIAL PRIMARY KEY,
                 user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-                recipient_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
                 content TEXT NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         `);
-        console.log('PostgreSQL: users and messages tables verified/created with DM support');
+
+        // Safely add recipient_id column if it doesn't already exist
+        await pool.query(`
+            ALTER TABLE messages 
+            ADD COLUMN IF NOT EXISTS recipient_id INTEGER REFERENCES users(id) ON DELETE CASCADE;
+        `);
+
+        console.log('PostgreSQL: tables and columns verified/created');
     } catch (err) {
         console.error('Database initialization error:', err);
     }
