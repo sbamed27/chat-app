@@ -3,6 +3,7 @@
   "dependencies": {
     "@socket.io/redis-adapter": "^8.3.0",
     "express": "^5.2.1",
+    "pg": "^8.23.1",
     "redis": "^6.3.0",
     "socket.io": "^4.8.4"
   }
